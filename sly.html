@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC>
+<html lang="en" xml:lang="en">
+    <head>
+        <title>NonGNU ELPA - sly</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" type="image/png" href="../favicon.png">
+        <link rel="stylesheet" href="//code.cdn.mozilla.net/fonts/fira.css">
+        <link rel="stylesheet" type="text/css" href="../layout.css">
+        <script src="../javascript/jquery.min.js" type="text/javascript"></script>
+        <script src="../javascript/jquery.filtertable.min.js" type="text/javascript"></script>
+        <script src="../javascript/package-search.js" type="text/javascript"></script>
+        <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,width=device-width" />
+    </head>
+    <body>
+
+        <div class="wrapper">
+
+            <div class="header small">
+                <div class="container">
+                    <h1><a href="index.html">NonGNU ELPA</a> - sly</h1>
+                </div>
+            </div>
+
+            <div class="container">
+<h2 class="package">sly</h2><dl><dt>Description</dt><dd>Sylvester the Cat's Common Lisp IDE</dd>
+<dt>Latest</dt> <dd><a href="sly-1.0.43.tar">sly-1.0.43.tar</a>, 2021-May-18, 3.57&nbsp;MiB</dd>
+<dt>Home page</dt> <dd><a href="https://github.com/joaotavora/sly">https://github.com/joaotavora/sly</a></dd>
+<dt>Browse ELPA's repository</dt> <dd><a href="https://git.savannah.gnu.org/cgit/emacs/nongnu.git/?h=elpa/sly">CGit</a> or <a href="https://git.savannah.gnu.org/gitweb/?p=emacs/nongnu.git;a=shortlog;h=refs/heads/elpa/sly">Gitweb</a></dd>
+</dl><p>To install this package, run in Emacs:</p>
+                       <pre>M-x <span class="kw">package-install</span> RET <span class="kw">sly</span> RET</pre><h2>Full description</h2><pre>
+       _____    __   __  __
+      / ___/   / /   \ \/ /               |\      _,,,---,,_
+      \__ \   / /     \  /                /,`.-'`'    -.  ;-;;,_
+     ___/ /  / /___   / /                |,4-  ) )-,_..;\ (  `'-'
+    /____/  /_____/  /_/                '---''(_/--'  `-'\_)
+
+
+SLY is Sylvester the Cat's Common Lisp IDE.
+
+SLY is a direct fork of SLIME, and contains the following
+improvements over it:
+
+* A full-featured REPL based on Emacs's `comint.el`;
+* Live code annotations via a new `sly-stickers` contrib;
+* Consistent button interface. Every Lisp object can be copied to the REPL;
+* flex-style completion out-of-the-box, using  Emacs's completion API.
+  Company, Helm, and others supported natively, no plugin required;
+* Cleanly ASDF-loaded by default, including contribs, enabled out-of-the-box;
+* Multiple inspectors and multiple REPLs;
+* An interactive trace dialog with interactive objects.  Copies function calls
+  to the REPL;
+* "Presentations" replaced by interactive backreferences which
+  highlight the object and remain stable throughout the REPL session;
+
+SLY is a fork of SLIME. We track its bugfixes, particularly to the
+implementation backends.  All SLIME's familar features (debugger,
+inspector, xref, etc...) are still available, with improved overall
+UX.
+
+See the NEWS.md file (should be sitting alongside this file) for
+more information
+</pre>
+<h2>News</h2><pre>
+Upcoming version
+----------------
+
+SLY 1.0.42 (December 2020)
+------------------------------
+
+### Much improved company completion
+
+If you haven't yet, just `M-x package-install RET company-mode`, to
+enable `company`.  It should start working in every SLY buffer.
+
+Moreover, a new "lazy" way to SLY collect completions from the Lisp
+backend means that user input is not blocked if this takes a long
+time.  The result is a much more responsive on-the-fly completion
+experience.
+
+If you don't like company, you can still use the normal on-request TAB
+completion, which also features an improved UI.
+
+### Fixed Helm conflicts
+
+Helm users should now get access to the full capabilities of SLY's
+completion function without needing to install any extra packages.
+Just need to `M-x sly-symbol-completion-mode` to turn off SLY's
+default completion UI.  (https://github.com/joaotavora/sly/issues/303)
+
+### Redesigned completion backend
+
+A redesigned completion backend replaces the legacy contribs
+`sly-fuzzy` and `sly-c-p-c`. The new "flex" backend considers package
+designators in the search string so you can complete other package's
+symbols even when outside a package.
+
+Here's an example:
+
+```
+CL-USER> (quiloa)         ->  (ql:quickload)
+CL-USER> (scan)           ->  (ppcre:scan)
+CL-USER> (setf locadirs)  ->  (setf ql:*local-project-directories*)
+CL-USER> (mvbind)         ->  (multiple-value-bind)
+```
+
+Flex completion is on by default, but that can be changed via
+`sly-complete-symbol-function`. The
+[documentation](http://joaotavora.github.io/sly/#Completion) has more
+information.
+
+Package-local nicknames are also considered (provided your
+implementation supports them).
+
+### Completely rewritten manual
+
+Manual has been reviewed from top to bottom. It should be much easier
+to navigate and nicer read in general, thouch it *still needs quite
+some proofreading*
+
+[A new chapter for existing SLIME users](http://joaotavora.github.io/sly/#A-SLY-tour-for-SLIME-users)
+figures prominently in the top-level.
+
+Presently no major omissions (*except maybe for multiple inspectors*).
+Reorganized nodes into a new structure not so focused on core vs
+contribs. Deleted stale sections. REPL section heavily rewritten to
+explain output types and backreferences.
+
+### New command M-x sly-import-symbol-at-point bound to C-c i by default
+
+This is a counterpart to the existing M-x sly-export-symbol-at-point,
+bound to C-c e. It strips the symbol under point of its package
+designator, and adds it under the :import-from subclause of the
+current package's defpackage form. An improvement suggested and
+implemented by Alexander Artemenko (github #147).
+
+### Improved SLY Stickers UI
+
+The UI for SLY Stickers, particularly for `M-x sly-stickers-replay`
+has been cleanup up. Upon entering the replay mode, SLY may ask user
+if she wants to delete the previous recordings, a commonly forgotten
+but useful pre-step (an idea by Javier Olaechea, github #91). Also,
+window management is less random.
+
+### Stale buffers are killed on connection close
+
+Inspector, debugger, and other buffers pertaining to a connection are
+automatically killed when the connection is closed.  The types of
+buffers that are exempt from this is configurable in a new
+`sly-keep-buffers-on-connection-close` defcustom, which lists
+REPL buffers by default.
+
+### Autodoc function args available in minibuffer prompts
+
+In minibuffer prompts like the one of `M-x sly-inspect`, autodoc
+information is available and displayed temporarily in the mode-line.
+
+### `C-c C-o` and `C-c M-o` bound in the REPL
+
+These clear recent output and the whole REPL, respectively.
+
+### Easy to parse copied calls to REPL
+
+The "Copy call to REPL" funcionality in the Trace Dialog and SLY-DB
+buffers now understands that symbols and numbers can be printed
+directly in the reconstructed function call, which eases reading.
+
+### The .swankrc and .swank.lisp are not loaded by default
+
+A problem encountered by Zach Beane.
+
+### Window management with M-. has been fixed
+
+...
+...
+
+</pre>
+
+
+        <div class="footer">
+            <div class="container">
+                <p>Copyright 2016-2021 <a href="https://fsf.org">Free Software Foundation</a>, Inc.</p>
+                <p>Design provided by <a href="https://nicolas.petton.fr">Nicolas Petton</a></p>
+                <p>
+                  This website is licensed under the
+                  <a href="https://creativecommons.org/licenses/by-nd/4.0/">CC BY-ND 4.0</a>
+                  International License.
+                </p>
+                <p><a href="/jslicense.html" data-jslicense="1">JavaScript Licenses</a></p>
+            </div>
+        </div>
+
+</body>
